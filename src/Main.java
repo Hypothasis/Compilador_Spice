@@ -4,6 +4,8 @@ public class Main {
 
     public static PalavrasReservadas palavras;
     public static TabelaTrans tabela;
+    public static int linha = 0;
+    public static int coluna = 0;
     private static String buffer = "";
     private static int proximoEstado = 0;
     private static int colunaEstado;
@@ -13,11 +15,17 @@ public class Main {
         tabela = new TabelaTrans();
         palavras = new PalavrasReservadas();
         tabela.getTabela();
-        // ASCII '\n' 10
+
         int i = 0;
-        BufferedReader buffer = new BufferedReader(new FileReader("file.spice"));
+        BufferedReader buffer = new BufferedReader(new FileReader("Files/file.spice"));
         while((i = buffer.read()) != -1){
             char c = (char) i;
+            if(c == '\n'){
+                // ASCII '\n' 10
+                linha++;
+                coluna = 0;
+            }
+            coluna++;
             //AnalisadorLexico(c);
         }
     }
@@ -25,8 +33,8 @@ public class Main {
     private static void AnalisadorLexico(char c) {
         ProximoEstado(c);
         buffer = buffer + c;
-        if(palavras.palavrasReservadas.containsKey(buffer)) {
-            System.out.println("Token encontrado no programa : " + palavras.palavrasReservadas.get(String.valueOf(buffer)));
+        if(palavras.Reservadas.containsKey(buffer)) {
+            System.out.println("Token encontrado no programa : " + palavras.Reservadas.get(String.valueOf(buffer)));
             countTokens++;
             buffer = "";
         }
