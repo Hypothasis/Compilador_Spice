@@ -17,11 +17,11 @@ public class Main {
         br = new BufferedReader(new FileReader("Files/file.spice"));
         while((i = br.read()) != -1){
             c = (char) i;
-            Estado.coluna++;
             Estado.buffer = Estado.buffer + c;
             if(Estado.estadoAtual != -1 || c == ' '){
                     Estado.proximoEstado(c);
             }
+            Estado.coluna++;
         }
     }
 
