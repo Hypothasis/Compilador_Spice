@@ -1,7 +1,9 @@
+import java.io.IOException;
+
 public class Estado {
     public static TabelaTrans tabela;
-    public static int linha = 0;
-    public static int coluna = 0;
+    public static int linha = 1;
+    public static int coluna = 1;
     public static String buffer = "";
     public static Integer estadoAtual = 0;
     public static int proximoEstado = 0;
@@ -12,7 +14,7 @@ public class Estado {
         tabela = new TabelaTrans();
     }
 
-    public static void proximoEstado(char caracter) {
+    public static void proximoEstado(char caracter) throws IOException {
         switch (caracter) {
             case 'a':
                 // Código para 'a'
@@ -329,9 +331,16 @@ public class Estado {
             case '0': case '1': case '2': case '3': case '4':
             case '5': case '6': case '7': case '8': case '9':
                 //Numero
-                colunaEstado = 52;
-                proximoEstado = tabela.estados[estadoAtual][colunaEstado];
-                estadoAtual = proximoEstado;
+                Main.i = Main.br.read();
+                while (Main.i != ' ' && Main.i != -1){
+                    Main.c = (char) Main.i;
+                    Estado.buffer = Estado.buffer + Main.c;
+                    Main.i = Main.br.read();
+                }
+                System.out.println("Token Num encontrado: \""+Estado.buffer+"\"");
+                buffer = "";
+                estadoAtual = 0;
+                countTokens++;
                 break;
             case '=':
                 colunaEstado = 53;
@@ -340,6 +349,16 @@ public class Estado {
                 break;
             case '#':
                 //comentario fazer logica
+                Main.i = Main.br.read();
+                while (Main.i != '\n'){
+                    Main.c = (char) Main.i;
+                    Estado.buffer = Estado.buffer + Main.c;
+                    Main.i = Main.br.read();
+                }
+                System.out.println("Token comentario encontrado: \""+Estado.buffer+"\"");
+                buffer = "";
+                estadoAtual = 0;
+                countTokens++;
                 break;
             case '!':
                 colunaEstado = 55;
@@ -352,6 +371,12 @@ public class Estado {
                 estadoAtual = proximoEstado;
                 break;
             case '>':
+                if(buffer == "->"){
+                    System.out.println("Token -> encontrado: \""+Estado.buffer+"\"");
+                    buffer = "";
+                    estadoAtual = 0;
+                    countTokens++;
+                }
                 System.out.printf("Error na linha %s coluna %s.\n",linha,coluna);
                 System.exit(-1);
                 break;
@@ -378,9 +403,18 @@ public class Estado {
                 countTokens++;
                 break;
             case '\"':
-                colunaEstado = 62;
-                proximoEstado = tabela.estados[estadoAtual][colunaEstado];
-                estadoAtual = proximoEstado;
+                //implementar o "texto"
+                Main.i = Main.br.read();
+                while (Main.i != '\"'){
+                    Main.c = (char) Main.i;
+                    Estado.buffer = Estado.buffer + Main.c;
+                    Main.i = Main.br.read();
+                }
+                Estado.buffer = Estado.buffer + "\"";
+                System.out.println("Token \"Texto\" encontrado: "+Estado.buffer);
+                buffer = "";
+                estadoAtual = 0;
+                countTokens++;
                 break;
             case '(':
                 System.out.println("Token ( encontrado");
@@ -411,6 +445,12 @@ public class Estado {
                 buffer = "";
                 estadoAtual = 0;
                 countTokens++;
+                break;
+            case '\n':
+                // ASCII '\n' 10
+                linha++;
+                coluna = 1;
+                buffer = "";
                 break;
             case ' ':
                 colunaEstado = 68;
@@ -505,13 +545,6 @@ public class Estado {
                     case -13:
                         //&&
                         System.out.println("Token && encontrado");
-                        buffer = "";
-                        estadoAtual = 0;
-                        countTokens++;
-                        break;
-                    case -14:
-                        //"Texto"
-                        System.out.println("Token \"Texto\" encontrado");
                         buffer = "";
                         estadoAtual = 0;
                         countTokens++;
