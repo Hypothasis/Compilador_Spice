@@ -1,14 +1,8 @@
-->
-!=
-==
-||
-&&
-;
-+
--
-*
-/
 #Comentario
-,
-(
-)
+Int idade;
+String Nome -> "Gabriel Oliveira";
+If ()
+    Repeat 4
+    Write "Meu nome";
+    Read nome;
+end

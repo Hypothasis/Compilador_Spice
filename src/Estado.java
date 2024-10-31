@@ -332,20 +332,28 @@ public class Estado {
             case '5': case '6': case '7': case '8': case '9':
                 //Numero
                 Main.i = Main.br.read();
-                while (Main.i != ' ' && Main.i != -1){
+                while (Main.i != ' ' && Main.i != -1 && Main.i != '\n'){
                     Main.c = (char) Main.i;
                     Estado.buffer = Estado.buffer + Main.c;
                     Main.i = Main.br.read();
                 }
                 System.out.println("Token Num encontrado: \""+Estado.buffer+"\"");
                 buffer = "";
+                proximoEstado = 0;
                 estadoAtual = 0;
                 countTokens++;
                 break;
             case '=':
-                colunaEstado = 53;
-                proximoEstado = tabela.estados[estadoAtual][colunaEstado];
-                estadoAtual = proximoEstado;
+                if(buffer.equals("!=")){
+                    System.out.println("Token != encontrado: \""+Estado.buffer+"\"");
+                    buffer = "";
+                    proximoEstado = 0;
+                    countTokens++;
+                }else{
+                    colunaEstado = 53;
+                    proximoEstado = tabela.estados[estadoAtual][colunaEstado];
+                    estadoAtual = proximoEstado;
+                }
                 break;
             case '#':
                 //comentario fazer logica
@@ -357,6 +365,7 @@ public class Estado {
                 }
                 System.out.println("Token comentario encontrado: \""+Estado.buffer+"\"");
                 buffer = "";
+                proximoEstado = 0;
                 estadoAtual = 0;
                 countTokens++;
                 break;
@@ -371,14 +380,16 @@ public class Estado {
                 estadoAtual = proximoEstado;
                 break;
             case '>':
-                if(buffer == "->"){
+                if(buffer.equals("->")){
                     System.out.println("Token -> encontrado: \""+Estado.buffer+"\"");
                     buffer = "";
+                    proximoEstado = 0;
                     estadoAtual = 0;
                     countTokens++;
+                } else {
+                    System.out.printf("Error na linha %s coluna %s.\n",linha,coluna);
+                    System.exit(-1);
                 }
-                System.out.printf("Error na linha %s coluna %s.\n",linha,coluna);
-                System.exit(-1);
                 break;
             case '|':
                 colunaEstado = 58;
@@ -413,6 +424,7 @@ public class Estado {
                 Estado.buffer = Estado.buffer + "\"";
                 System.out.println("Token \"Texto\" encontrado: "+Estado.buffer);
                 buffer = "";
+                proximoEstado = 0;
                 estadoAtual = 0;
                 countTokens++;
                 break;
@@ -458,10 +470,19 @@ public class Estado {
                     proximoEstado = tabela.estados[estadoAtual][colunaEstado];
                 }
                 switch (proximoEstado) {
+                    case 0:
+                        //spaço
+                        System.out.println("Token \" \" encontrado");
+                        buffer = "";
+                        proximoEstado = 0;
+                        estadoAtual = 0;
+                        countTokens++;
+                        break;
                     case -1:
                         //Id
                         System.out.println("Token id: "+buffer+"encontrado");
                         buffer = "";
+                        proximoEstado = 0;
                         estadoAtual = 0;
                         countTokens++;
                         break;
@@ -469,6 +490,7 @@ public class Estado {
                         //String
                         System.out.println("Token String encontrado");
                         buffer = "";
+                        proximoEstado = 0;
                         estadoAtual = 0;
                         countTokens++;
                         break;
@@ -476,6 +498,7 @@ public class Estado {
                         //Int
                         System.out.println("Token Int encontrado");
                         buffer = "";
+                        proximoEstado = 0;
                         estadoAtual = 0;
                         countTokens++;
                         break;
@@ -483,6 +506,7 @@ public class Estado {
                         //Write
                         System.out.println("Token Write encontrado");
                         buffer = "";
+                        proximoEstado = 0;
                         estadoAtual = 0;
                         countTokens++;
                         break;
@@ -490,6 +514,7 @@ public class Estado {
                         //Read
                         System.out.println("Token Read encontrado");
                         buffer = "";
+                        proximoEstado = 0;
                         estadoAtual = 0;
                         countTokens++;
                         break;
@@ -497,6 +522,7 @@ public class Estado {
                         //Repeat
                         System.out.println("Token Repeat encontrado");
                         buffer = "";
+                        proximoEstado = 0;
                         estadoAtual = 0;
                         countTokens++;
                         break;
@@ -504,6 +530,7 @@ public class Estado {
                         //If
                         System.out.println("Token If encontrado");
                         buffer = "";
+                        proximoEstado = 0;
                         estadoAtual = 0;
                         countTokens++;
                         break;
@@ -511,6 +538,7 @@ public class Estado {
                         //end
                         System.out.println("Token end encontrado");
                         buffer = "";
+                        proximoEstado = 0;
                         estadoAtual = 0;
                         countTokens++;
                         break;
@@ -518,6 +546,7 @@ public class Estado {
                         //!=
                         System.out.println("Token != encontrado");
                         buffer = "";
+                        proximoEstado = 0;
                         estadoAtual = 0;
                         countTokens++;
                         break;
@@ -525,6 +554,7 @@ public class Estado {
                         //==
                         System.out.println("Token == encontrado");
                         buffer = "";
+                        proximoEstado = 0;
                         estadoAtual = 0;
                         countTokens++;
                         break;
@@ -532,6 +562,7 @@ public class Estado {
                         //->
                         System.out.println("Token -> encontrado");
                         buffer = "";
+                        proximoEstado = 0;
                         estadoAtual = 0;
                         countTokens++;
                         break;
@@ -539,6 +570,7 @@ public class Estado {
                         //||
                         System.out.println("Token || encontrado");
                         buffer = "";
+                        proximoEstado = 0;
                         estadoAtual = 0;
                         countTokens++;
                         break;
@@ -546,6 +578,7 @@ public class Estado {
                         //&&
                         System.out.println("Token && encontrado");
                         buffer = "";
+                        proximoEstado = 0;
                         estadoAtual = 0;
                         countTokens++;
                         break;
@@ -553,6 +586,7 @@ public class Estado {
                         //Num
                         System.out.println("Token Num encontrado");
                         buffer = "";
+                        proximoEstado = 0;
                         estadoAtual = 0;
                         countTokens++;
                         break;
@@ -560,6 +594,7 @@ public class Estado {
                         //-
                         System.out.println("Token - encontrado");
                         buffer = "";
+                        proximoEstado = 0;
                         estadoAtual = 0;
                         countTokens++;
                         break;
@@ -567,6 +602,7 @@ public class Estado {
                         //" "
                         System.out.println("Token \" \" encontrado");
                         buffer = "";
+                        proximoEstado = 0;
                         estadoAtual = 0;
                         countTokens++;
                         break;
@@ -583,7 +619,7 @@ public class Estado {
                 }
                 break;
             default:
-                //simbolo nao reconhecido pela linguagem
+                System.out.printf("Error: Simbolo nao pertence a linguagem, na linha: %s ,coluna: %s",linha,coluna);
                 break;
         }
 
