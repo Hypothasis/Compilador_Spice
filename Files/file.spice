@@ -1,8 +1,9 @@
 #Comentario
-Int idade;
+Int idade ;
 String Nome -> "Gabriel Oliveira";
-If ()
+If ( 1 == 1 )
     Repeat 4
-    Write "Meu nome";
-    Read nome;
-end
+        Write "Meu nome";
+    end
+    Read nome ;
+end ;

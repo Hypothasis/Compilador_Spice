@@ -332,7 +332,7 @@ public class Estado {
             case '5': case '6': case '7': case '8': case '9':
                 //Numero
                 Main.i = Main.br.read();
-                while (Main.i != ' ' && Main.i != -1 && Main.i != '\n'){
+                while (Main.i != ' ' && Main.i != -1 && Main.i != '\n' & Main.i != ')'){
                     Main.c = (char) Main.i;
                     Estado.buffer = Estado.buffer + Main.c;
                     Main.i = Main.br.read();
@@ -364,6 +364,7 @@ public class Estado {
                     Main.i = Main.br.read();
                 }
                 System.out.println("Token comentario encontrado: \""+Estado.buffer+"\"");
+                Main.tokenStore.addCMD(buffer);
                 buffer = "";
                 proximoEstado = 0;
                 estadoAtual = 0;
@@ -382,6 +383,7 @@ public class Estado {
             case '>':
                 if(buffer.equals("->")){
                     System.out.println("Token -> encontrado: \""+Estado.buffer+"\"");
+                    Main.tokenStore.addCMD(buffer);
                     buffer = "";
                     proximoEstado = 0;
                     estadoAtual = 0;
@@ -409,6 +411,9 @@ public class Estado {
                 break;
             case ';':
                 System.out.println("Token ; encontrado");
+                Main.tokenStore.addCMD(buffer);
+                Main.tokenStore.getAllCMD();
+                Main.tokenStore.clearCMD();
                 buffer = "";
                 estadoAtual = 0;
                 countTokens++;
@@ -423,6 +428,7 @@ public class Estado {
                 }
                 Estado.buffer = Estado.buffer + "\"";
                 System.out.println("Token \"Texto\" encontrado: "+Estado.buffer);
+                Main.tokenStore.addCMD(buffer);
                 buffer = "";
                 proximoEstado = 0;
                 estadoAtual = 0;
@@ -430,30 +436,35 @@ public class Estado {
                 break;
             case '(':
                 System.out.println("Token ( encontrado");
+                Main.tokenStore.addCMD(buffer);
                 buffer = "";
                 estadoAtual = 0;
                 countTokens++;
                 break;
             case ')':
                 System.out.println("Token ) encontrado");
+                Main.tokenStore.addCMD(buffer);
                 buffer = "";
                 estadoAtual = 0;
                 countTokens++;
                 break;
             case '+':
                 System.out.println("Token + encontrado");
+                Main.tokenStore.addCMD(buffer);
                 buffer = "";
                 estadoAtual = 0;
                 countTokens++;
                 break;
             case '*':
                 System.out.println("Token * encontrado");
+                Main.tokenStore.addCMD(buffer);
                 buffer = "";
                 estadoAtual = 0;
                 countTokens++;
                 break;
             case '/':
                 System.out.println("Token / encontrado");
+                Main.tokenStore.addCMD(buffer);
                 buffer = "";
                 estadoAtual = 0;
                 countTokens++;
@@ -473,6 +484,7 @@ public class Estado {
                     case 0:
                         //spaço
                         System.out.println("Token \" \" encontrado");
+                        Main.tokenStore.addCMD(buffer);
                         buffer = "";
                         proximoEstado = 0;
                         estadoAtual = 0;
@@ -480,7 +492,9 @@ public class Estado {
                         break;
                     case -1:
                         //Id
-                        System.out.println("Token id: "+buffer+"encontrado");
+                        System.out.println("Token id \'"+buffer+"\' encontrado");
+                        TokenStore.idTokens.put(buffer,"null");
+                        Main.tokenStore.addCMD(buffer);
                         buffer = "";
                         proximoEstado = 0;
                         estadoAtual = 0;
@@ -489,6 +503,7 @@ public class Estado {
                     case -2:
                         //String
                         System.out.println("Token String encontrado");
+                        Main.tokenStore.addCMD(buffer);
                         buffer = "";
                         proximoEstado = 0;
                         estadoAtual = 0;
@@ -497,6 +512,7 @@ public class Estado {
                     case -3:
                         //Int
                         System.out.println("Token Int encontrado");
+                        Main.tokenStore.addCMD(buffer);
                         buffer = "";
                         proximoEstado = 0;
                         estadoAtual = 0;
@@ -505,6 +521,7 @@ public class Estado {
                     case -4:
                         //Write
                         System.out.println("Token Write encontrado");
+                        Main.tokenStore.addCMD(buffer);
                         buffer = "";
                         proximoEstado = 0;
                         estadoAtual = 0;
@@ -513,6 +530,7 @@ public class Estado {
                     case -5:
                         //Read
                         System.out.println("Token Read encontrado");
+                        Main.tokenStore.addCMD(buffer);
                         buffer = "";
                         proximoEstado = 0;
                         estadoAtual = 0;
@@ -521,6 +539,7 @@ public class Estado {
                     case -6:
                         //Repeat
                         System.out.println("Token Repeat encontrado");
+                        Main.tokenStore.addCMD(buffer);
                         buffer = "";
                         proximoEstado = 0;
                         estadoAtual = 0;
@@ -529,6 +548,7 @@ public class Estado {
                     case -7:
                         //If
                         System.out.println("Token If encontrado");
+                        Main.tokenStore.addCMD(buffer);
                         buffer = "";
                         proximoEstado = 0;
                         estadoAtual = 0;
@@ -537,6 +557,7 @@ public class Estado {
                     case -8:
                         //end
                         System.out.println("Token end encontrado");
+                        Main.tokenStore.addCMD(buffer);
                         buffer = "";
                         proximoEstado = 0;
                         estadoAtual = 0;
@@ -545,6 +566,7 @@ public class Estado {
                     case -9:
                         //!=
                         System.out.println("Token != encontrado");
+                        Main.tokenStore.addCMD(buffer);
                         buffer = "";
                         proximoEstado = 0;
                         estadoAtual = 0;
@@ -553,6 +575,7 @@ public class Estado {
                     case -10:
                         //==
                         System.out.println("Token == encontrado");
+                        Main.tokenStore.addCMD(buffer);
                         buffer = "";
                         proximoEstado = 0;
                         estadoAtual = 0;
@@ -561,6 +584,7 @@ public class Estado {
                     case -11:
                         //->
                         System.out.println("Token -> encontrado");
+                        Main.tokenStore.addCMD(buffer);
                         buffer = "";
                         proximoEstado = 0;
                         estadoAtual = 0;
@@ -569,6 +593,7 @@ public class Estado {
                     case -12:
                         //||
                         System.out.println("Token || encontrado");
+                        Main.tokenStore.addCMD(buffer);
                         buffer = "";
                         proximoEstado = 0;
                         estadoAtual = 0;
@@ -577,6 +602,7 @@ public class Estado {
                     case -13:
                         //&&
                         System.out.println("Token && encontrado");
+                        Main.tokenStore.addCMD(buffer);
                         buffer = "";
                         proximoEstado = 0;
                         estadoAtual = 0;
@@ -585,6 +611,7 @@ public class Estado {
                     case -15:
                         //Num
                         System.out.println("Token Num encontrado");
+                        Main.tokenStore.addCMD(buffer);
                         buffer = "";
                         proximoEstado = 0;
                         estadoAtual = 0;
@@ -593,6 +620,7 @@ public class Estado {
                     case -19:
                         //-
                         System.out.println("Token - encontrado");
+                        Main.tokenStore.addCMD(buffer);
                         buffer = "";
                         proximoEstado = 0;
                         estadoAtual = 0;
@@ -601,6 +629,7 @@ public class Estado {
                     case -26:
                         //" "
                         System.out.println("Token \" \" encontrado");
+                        Main.tokenStore.addCMD(buffer);
                         buffer = "";
                         proximoEstado = 0;
                         estadoAtual = 0;
