@@ -4,7 +4,9 @@ public class TokenStore {
     public static HashMap<String, String> idTokens = new HashMap<>();
     public static String [] cmd;
     private static Integer index = 0;
-    private static Integer cmdCount = 1;
+    public static Integer cmdCount = 1;
+    public static Integer countTokens = 0;
+    public boolean flag;
 
     TokenStore (){
         cmd = new String[30];
@@ -12,8 +14,11 @@ public class TokenStore {
 
     //Adiciona um token ao comando atual a ser analisado
     void addCMD(String token){
+        // Se terminou de ler um comando adciona flag para analisador sintatico possa ler
+        if (token.equals(";") || token.equals("end")) flag = true;
         cmd[index] = token;
         index++;
+        countTokens++;
     }
 
     //Limpa o vetor comando para entrar outro comando a ser analisado
@@ -24,18 +29,23 @@ public class TokenStore {
     }
 
     //Mostra o comando atual para ser analisado com o Sintatico
-    void getAllCMD (){
-        System.out.printf("\n%d° comando: ",cmdCount);
-        int i = 0;
-        System.out.printf("{");
-        while (cmd[i] != null){
-            System.out.printf("[%s] ",cmd[i]);
-            i++;
+    void getCMD (){
+        if (flag == true){
+            System.out.printf("\n%d° comando: ",cmdCount);
+            int i = 0;
+            System.out.printf("{");
+            while (cmd[i] != null){
+                System.out.printf("[%s] ",cmd[i]);
+                i++;
+            }
+            System.out.printf("}\n\n");
+            flag = false;
         }
-        System.out.printf("}\n\n");
     }
     // Pega todas os tokens id e seus valores
     void getAllTokensId(){
+        System.out.println("\nValores dos Tokens IDs:");
         System.out.print("\n"+idTokens+"\n");
+        System.out.println("______________________________________");
     }
 }

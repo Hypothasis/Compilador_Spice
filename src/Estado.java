@@ -1,3 +1,5 @@
+import Staticos.TabelaTrans;
+
 import java.io.IOException;
 
 public class Estado {
@@ -338,6 +340,7 @@ public class Estado {
                     Main.i = Main.br.read();
                 }
                 System.out.println("Token Num encontrado: \""+Estado.buffer+"\"");
+                Main.tokenStore.addCMD(buffer);
                 buffer = "";
                 proximoEstado = 0;
                 estadoAtual = 0;
@@ -412,8 +415,6 @@ public class Estado {
             case ';':
                 System.out.println("Token ; encontrado");
                 Main.tokenStore.addCMD(buffer);
-                Main.tokenStore.getAllCMD();
-                Main.tokenStore.clearCMD();
                 buffer = "";
                 estadoAtual = 0;
                 countTokens++;

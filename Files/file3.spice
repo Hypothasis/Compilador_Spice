@@ -1,0 +1,7 @@
+Int abc -> 12 ;
+
+Int a -> 12 + 11 * 50 / 20 + ( abc ) ;
+
+If ( 1 == 1 )
+    Read nome ;
+end

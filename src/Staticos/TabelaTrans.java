@@ -1,7 +1,9 @@
+package Staticos;
+
 public class TabelaTrans {
     public static int [][] estados;
 
-    TabelaTrans (){
+    public TabelaTrans(){
         tabelaTransiçãoInit();
     }
 

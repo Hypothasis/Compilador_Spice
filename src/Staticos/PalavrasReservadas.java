@@ -1,23 +1,26 @@
+package Staticos;
+
 import java.util.HashMap;
 
 public class PalavrasReservadas {
     public static HashMap<String, String> Reservadas;
 
-    PalavrasReservadas (){
+    public PalavrasReservadas (){
         palavrasReservadasInit();
     }
 
     public static void palavrasReservadasInit() {
         //                                  Key   ,  value
         Reservadas = new HashMap <String , String>();
-        Reservadas.put("If", "se"); // <If, se> token se
-        Reservadas.put("Repeat", "enquanto"); // <Repeat, enquanto> (token de repetir)
-        Reservadas.put("Read","entrada"); // <Read, entrada> (token de input)
-        Reservadas.put("Write","saida"); // <Write, saida> (token de print)
+        Reservadas.put("If ", "se"); // <If, se> token se
+        Reservadas.put("Repeat ", "enquanto"); // <Repeat, enquanto> (token de repetir)
+        Reservadas.put("Read ","entrada"); // <Read, entrada> (token de input)
+        Reservadas.put("Write ","saida"); // <Write, saida> (token de print)
 
         Reservadas.put("id","variavel"); // <id,variavel> (token de id)
-        Reservadas.put("Int","INT"); // <int, INT> (token de numero inteiro)
-        Reservadas.put("String","STRING"); // <String, String> (token de texto)
+        Reservadas.put("Int ","INT"); // <int, INT> (token de numero inteiro)
+        Reservadas.put("String ","STRING"); // <String, String> (token de texto)
+        Reservadas.put("num","NUM"); // <String, NUM> (token de Num)
 
         Reservadas.put("==","comparação"); // <==,comparação> (token de comparação)
         Reservadas.put("#","Comentário"); // <#, comentario> (token de comentario)
