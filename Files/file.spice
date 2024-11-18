@@ -1,9 +1,13 @@
 #Comentario
 Int idade ;
-String Nome -> "Gabriel Oliveira";
-If ( 1 == 1 )
-    Repeat 4
-        Write "Meu nome";
-    end
-    Read nome ;
+String Nome -> "Gabriel Oliveira" ;
+
+If 12 == 12
+    Read idade ;
 end ;
+
+Repeat 4
+    Write "Meu nome" ;
+end ;
+
+

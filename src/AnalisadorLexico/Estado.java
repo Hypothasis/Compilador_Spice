@@ -1,4 +1,7 @@
+package AnalisadorLexico;
+
 import Staticos.TabelaTrans;
+import main.Main;
 
 import java.io.IOException;
 
@@ -11,6 +14,7 @@ public class Estado {
     public static int proximoEstado = 0;
     public static int colunaEstado;
     public static int countTokens = 0;
+    public static boolean flag = true;
 
     public  Estado() {
         tabela = new TabelaTrans();
@@ -338,6 +342,7 @@ public class Estado {
                     Main.c = (char) Main.i;
                     Estado.buffer = Estado.buffer + Main.c;
                     Main.i = Main.br.read();
+                    Main.countLetters++;
                 }
                 System.out.println("Token Num encontrado: \""+Estado.buffer+"\"");
                 Main.tokenStore.addCMD(buffer);
@@ -367,7 +372,6 @@ public class Estado {
                     Main.i = Main.br.read();
                 }
                 System.out.println("Token comentario encontrado: \""+Estado.buffer+"\"");
-                Main.tokenStore.addCMD(buffer);
                 buffer = "";
                 proximoEstado = 0;
                 estadoAtual = 0;
@@ -485,7 +489,7 @@ public class Estado {
                     case 0:
                         //spaço
                         System.out.println("Token \" \" encontrado");
-                        Main.tokenStore.addCMD(buffer);
+                        //Main.tokenStore.addCMD(buffer);
                         buffer = "";
                         proximoEstado = 0;
                         estadoAtual = 0;
@@ -494,7 +498,7 @@ public class Estado {
                     case -1:
                         //Id
                         System.out.println("Token id \'"+buffer+"\' encontrado");
-                        TokenStore.idTokens.put(buffer,"null");
+                        Main.ids.addID(buffer, "", "");
                         Main.tokenStore.addCMD(buffer);
                         buffer = "";
                         proximoEstado = 0;
@@ -504,7 +508,7 @@ public class Estado {
                     case -2:
                         //String
                         System.out.println("Token String encontrado");
-                        Main.tokenStore.addCMD(buffer);
+                        Main.tokenStore.addCMD("String");
                         buffer = "";
                         proximoEstado = 0;
                         estadoAtual = 0;
@@ -513,7 +517,7 @@ public class Estado {
                     case -3:
                         //Int
                         System.out.println("Token Int encontrado");
-                        Main.tokenStore.addCMD(buffer);
+                        Main.tokenStore.addCMD("Int");
                         buffer = "";
                         proximoEstado = 0;
                         estadoAtual = 0;
@@ -522,7 +526,7 @@ public class Estado {
                     case -4:
                         //Write
                         System.out.println("Token Write encontrado");
-                        Main.tokenStore.addCMD(buffer);
+                        Main.tokenStore.addCMD("Write");
                         buffer = "";
                         proximoEstado = 0;
                         estadoAtual = 0;
@@ -531,7 +535,7 @@ public class Estado {
                     case -5:
                         //Read
                         System.out.println("Token Read encontrado");
-                        Main.tokenStore.addCMD(buffer);
+                        Main.tokenStore.addCMD("Read");
                         buffer = "";
                         proximoEstado = 0;
                         estadoAtual = 0;
@@ -540,7 +544,8 @@ public class Estado {
                     case -6:
                         //Repeat
                         System.out.println("Token Repeat encontrado");
-                        Main.tokenStore.addCMD(buffer);
+                        Main.tokenStore.addCMD("Repeat");
+                        flag = false;
                         buffer = "";
                         proximoEstado = 0;
                         estadoAtual = 0;
@@ -549,7 +554,8 @@ public class Estado {
                     case -7:
                         //If
                         System.out.println("Token If encontrado");
-                        Main.tokenStore.addCMD(buffer);
+                        flag = false;
+                        Main.tokenStore.addCMD("If");
                         buffer = "";
                         proximoEstado = 0;
                         estadoAtual = 0;
@@ -558,7 +564,8 @@ public class Estado {
                     case -8:
                         //end
                         System.out.println("Token end encontrado");
-                        Main.tokenStore.addCMD(buffer);
+                        Main.tokenStore.addCMD("end");
+                        flag = true;
                         buffer = "";
                         proximoEstado = 0;
                         estadoAtual = 0;
@@ -567,7 +574,7 @@ public class Estado {
                     case -9:
                         //!=
                         System.out.println("Token != encontrado");
-                        Main.tokenStore.addCMD(buffer);
+                        Main.tokenStore.addCMD("!=");
                         buffer = "";
                         proximoEstado = 0;
                         estadoAtual = 0;
@@ -576,7 +583,7 @@ public class Estado {
                     case -10:
                         //==
                         System.out.println("Token == encontrado");
-                        Main.tokenStore.addCMD(buffer);
+                        Main.tokenStore.addCMD("==");
                         buffer = "";
                         proximoEstado = 0;
                         estadoAtual = 0;
@@ -585,7 +592,7 @@ public class Estado {
                     case -11:
                         //->
                         System.out.println("Token -> encontrado");
-                        Main.tokenStore.addCMD(buffer);
+                        Main.tokenStore.addCMD("->");
                         buffer = "";
                         proximoEstado = 0;
                         estadoAtual = 0;
@@ -594,7 +601,7 @@ public class Estado {
                     case -12:
                         //||
                         System.out.println("Token || encontrado");
-                        Main.tokenStore.addCMD(buffer);
+                        Main.tokenStore.addCMD("||");
                         buffer = "";
                         proximoEstado = 0;
                         estadoAtual = 0;
@@ -603,7 +610,7 @@ public class Estado {
                     case -13:
                         //&&
                         System.out.println("Token && encontrado");
-                        Main.tokenStore.addCMD(buffer);
+                        Main.tokenStore.addCMD("&&");
                         buffer = "";
                         proximoEstado = 0;
                         estadoAtual = 0;
@@ -621,7 +628,7 @@ public class Estado {
                     case -19:
                         //-
                         System.out.println("Token - encontrado");
-                        Main.tokenStore.addCMD(buffer);
+                        Main.tokenStore.addCMD("-");
                         buffer = "";
                         proximoEstado = 0;
                         estadoAtual = 0;
@@ -630,7 +637,7 @@ public class Estado {
                     case -26:
                         //" "
                         System.out.println("Token \" \" encontrado");
-                        Main.tokenStore.addCMD(buffer);
+                        Main.tokenStore.addCMD(" ");
                         buffer = "";
                         proximoEstado = 0;
                         estadoAtual = 0;
@@ -650,6 +657,7 @@ public class Estado {
                 break;
             default:
                 System.out.printf("Error: Simbolo nao pertence a linguagem, na linha: %s ,coluna: %s",linha,coluna);
+                System.exit(-1);
                 break;
         }
 

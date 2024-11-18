@@ -1,2 +1,3 @@
-Int idade ;
-String nome ;
+Int idade -> 123 ;
+String nome -> "Gabriel" ;
+String RG ;
