@@ -3,9 +3,12 @@ package AnalisadorSintatico;
 import main.Main;
 import IDS.IDsReservados;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class AnalisadorSintatico {
 
-    private  String [] tokens;
+    private List<String> tokens;
     private int posicao;
 
     public void teste(String[] cmd){
@@ -20,10 +23,10 @@ public class AnalisadorSintatico {
         System.out.printf("}\n\n");
     }
     public void init(String[] cmd){
-        tokens = new String[cmd.length];
+        tokens = new ArrayList<>();
         for (int i = 0; i < cmd.length; i++){
             if (cmd[i] != null){
-                tokens[i] = cmd[i];
+                tokens.add(cmd[i]);
             }
         }
         posicao = 0;
@@ -45,12 +48,12 @@ public class AnalisadorSintatico {
     }
 
     private boolean CMDS() {
-        System.out.println("Executando regra CMDS na posição: " + posicao + " (" + tokens[posicao] + ")");
+        System.out.println("Executando regra CMDS na posição: " + posicao + " (" + tokens.get(posicao) + ")");
         if (CMD()) {
-            if(tokens[posicao] == null) return true;
+            if(tokens.size() < posicao) return true;
             while (match(";")) {
-                if(tokens[posicao] == null) return true;
-                if (!CMD()) return false;
+                if(posicao >= tokens.size() || tokens.get(posicao).isEmpty()) return true;
+                if (CMD()) return false;
             }
             return true;
         }
@@ -58,12 +61,12 @@ public class AnalisadorSintatico {
     }
 
     private boolean CMD() {
-        System.out.println("Executando regra CMD na posição: " + posicao+ " (" + tokens[posicao] + ")");
+        System.out.println("Executando regra CMD na posição: " + posicao+ " (" + tokens.get(posicao) + ")");
         int savePos = posicao;
 
         if (match("Int")) {
-            if (Main.ids.IDexists(tokens[posicao])) {
-                System.out.println("Consumindo token: id na posição " + posicao + " (" + tokens[posicao] + ")");
+            if (Main.ids.IDexists(tokens.get(posicao))) {
+                System.out.println("Consumindo token: id na posição " + posicao + " (" + tokens.get(posicao) + ")");
                 posicao++;
                 if (match(";")) return true; // variavel nao inicializada
                 if (match("->") && match("num")) return true; // variavel inicializada
@@ -73,8 +76,8 @@ public class AnalisadorSintatico {
         }
 
         if (match("String")) {
-            if (Main.ids.IDexists(tokens[posicao])) {
-                System.out.println("Consumindo token: id na posição " + posicao + " (" + tokens[posicao] + ")");
+            if (Main.ids.IDexists(tokens.get(posicao))) {
+                System.out.println("Consumindo token: id na posição " + posicao + " (" + tokens.get(posicao) + ")");
                 posicao++;
                 if (match(";")) return true; // variavel nao inicializada
                 if (match("->") && match("\"Texto\"")) return true; // Inicializada
@@ -89,12 +92,11 @@ public class AnalisadorSintatico {
 
         if (match("Repeat")) {
             if (match("num") && CMDS() && match("end")) return true;
-            posicao = savePos;
         }
 
         if (match("Read")) {
-            if (Main.ids.IDexists(tokens[posicao])) {
-                System.out.println("Consumindo token: id na posição " + posicao + " (" + tokens[posicao] + ")");
+            if (Main.ids.IDexists(tokens.get(posicao))) {
+                System.out.println("Consumindo token: id na posição " + posicao + " (" + tokens.get(posicao) + ")");
                 posicao++;
                 if (match(";")) return true; // variavel nao inicializada
             }
@@ -109,7 +111,7 @@ public class AnalisadorSintatico {
     }
 
     private boolean COND() {
-        System.out.println("Executando regra COND na posição: " + posicao + " (" + tokens[posicao] + ")");
+        System.out.println("Executando regra COND na posição: " + posicao + " (" + tokens.get(posicao) + ")");
         int savePos = posicao;
         if (EXP()) {
             if (match("!=") || match("==")) {
@@ -121,7 +123,7 @@ public class AnalisadorSintatico {
     }
 
     private boolean EXP() {
-        System.out.println("Executando regra EXP na posição: " + posicao + " (" + tokens[posicao] + ")");
+        System.out.println("Executando regra EXP na posição: " + posicao + " (" + tokens.get(posicao) + ")");
         if (TERMO()) {
             while (match("+") || match("-")) {
                 if (!TERMO()) return false;
@@ -132,7 +134,7 @@ public class AnalisadorSintatico {
     }
 
     private boolean TERMO() {
-        System.out.println("Executando regra TERMO na posição: " + posicao + " (" + tokens[posicao] + ")");
+        System.out.println("Executando regra TERMO na posição: " + posicao + " (" + tokens.get(posicao) + ")");
         if (FATOR()) {
             while (match("*") || match("/")) {
                 if (!FATOR()) return false;
@@ -143,7 +145,7 @@ public class AnalisadorSintatico {
     }
 
     private boolean FATOR() {
-        System.out.println("Executando regra FATOR na posição: " + posicao + " (" + tokens[posicao] + ")");
+        System.out.println("Executando regra FATOR na posição: " + posicao + " (" + tokens.get(posicao) + ")");
         int savePos = posicao;
 
         if (match("(")) {
@@ -157,11 +159,11 @@ public class AnalisadorSintatico {
     }
 
     private boolean match(String esperado) {
-        if (posicao < tokens.length) {
+        if (posicao < tokens.size()) {
 
             if(esperado.equals("num")){
-                if(isInteger(tokens[posicao])){
-                    System.out.println("Consumindo token: " + esperado + " na posição " + posicao + " (" + tokens[posicao] + ")");
+                if(isInteger(tokens.get(posicao))){
+                    System.out.println("Consumindo token: " + esperado + " na posição " + posicao + " (" + tokens.get(posicao) + ")");
                     posicao++;
                     return true;
                 }
@@ -169,8 +171,8 @@ public class AnalisadorSintatico {
             }
 
             if(esperado.equals("id")){
-                if(Main.ids.IDexists(tokens[posicao])){
-                    System.out.println("Consumindo token: " + esperado + " na posição " + posicao + " (" + tokens[posicao] + ")");
+                if(Main.ids.IDexists(tokens.get(posicao))){
+                    System.out.println("Consumindo token: " + esperado + " na posição " + posicao + " (" + tokens.get(posicao) + ")");
                     posicao++;
                     return true;
                 }
@@ -180,18 +182,21 @@ public class AnalisadorSintatico {
 
 
             if(esperado.startsWith("\"")){
-                System.out.println("Consumindo token: " + esperado + " na posição " + posicao + " (" + tokens[posicao] + ")");
+                System.out.println("Consumindo token: \"Texto\" " + esperado + " na posição " + posicao + " (" + tokens.get(posicao) + ")");
                 posicao++;
                 return true;
             }
 
-            if (esperado.equals(tokens[posicao])) {
-                System.out.println("Consumindo token: " + esperado + " na posição " + posicao + " (" + tokens[posicao] + ")");
+            if (esperado.equals(tokens.get(posicao))) {
+                System.out.println("Consumindo token: " + esperado + " na posição " + posicao + " (" + tokens.get(posicao) + ")");
+                if(tokens.get(posicao).equals("end")){
+                    return true;
+                }
                 posicao++;
                 return true;
             }
 
-            if (tokens[posicao] == null) {
+            if (tokens.get(posicao) == null) {
                 System.out.println("Erro: token na posição " + posicao + " é nulo.");
                 return false;
             }

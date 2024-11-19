@@ -50,6 +50,8 @@ public class Main {
             Main.tokenStore.getCMD(); // Mostra os valores docomando a ser analisado
             analisadorSintatico.init(tokenStore.cmd);
             analisadorSintatico.analisar();
+            Main.tokenStore.clearCMD(); // Limpa o buffer de comando para o proximo
+            TokenStore.flag = false;
             System.out.println("______________________________________");
         }
     }

@@ -14,12 +14,14 @@ public class TokenStore {
     //Adiciona um token ao comando atual a ser analisado
     void addCMD(String token){
         // Se terminou de ler um comando adciona flag para analisador sintatico possa ler
-        if (token.equals(";") || token.equals("end")){
+        if (token.equals(";") || token.equals("end ")){
             if(Estado.flag == true){
                 flag = true;
             }
         }
+
         cmd[index] = token;
+        if(token.equals("end ")) cmd[index] = "end";
         index++;
         countTokens++;
     }

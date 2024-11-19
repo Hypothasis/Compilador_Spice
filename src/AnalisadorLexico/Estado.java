@@ -419,6 +419,7 @@ public class Estado {
             case ';':
                 System.out.println("Token ; encontrado");
                 Main.tokenStore.addCMD(buffer);
+                flag = true;
                 buffer = "";
                 estadoAtual = 0;
                 countTokens++;
@@ -564,7 +565,7 @@ public class Estado {
                     case -8:
                         //end
                         System.out.println("Token end encontrado");
-                        Main.tokenStore.addCMD("end");
+                        Main.tokenStore.addCMD("end ");
                         flag = true;
                         buffer = "";
                         proximoEstado = 0;
