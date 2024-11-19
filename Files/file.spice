@@ -1,11 +1,12 @@
 #Comentario
-
 Int idade ;
-String Nome -> "Gabriel Oliveira" ;
+Int altura -> 23 ;
+String nome ;
+String rg -> "CNH" ;
 
-If 12 == 12
-    Read idade ;
-end 
+ If 12 == 12
+     Read idade ;
+ end 
 
 Repeat 5
     Write "oi" ;

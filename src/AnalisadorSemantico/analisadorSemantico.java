@@ -51,11 +51,14 @@ public class analisadorSemantico {
 
         // Verificação para tipo Int
         if (match("Int")) {
-            if (!Main.ids.IDexists(tokens[posicao])) { // Se não existe, declaramos
-                Main.ids.addID(tokens[posicao], "Int", "null"); // Declarada, mas não inicializada
-                posicao++;
-                if (match(";")) return true; // Variável não inicializada
-                if (match("->") && match("num")) return true; // Variável inicializada
+            if (Main.ids.IDexists(tokens[posicao])) { // Sse existe
+                if(Main.ids.inicializaded(tokens[posicao])){ //se foi inicializada
+                    if (match("->") && match("num")) return true; // Variável inicializada
+                } else { // Se nao foi inicializada
+                    Main.ids.addID(tokens[posicao], "Int", "null"); // Declarada, mas não inicializada
+                    posicao++;
+                    if (match(";")) return true; // Variável não inicializada
+                }
             } else {
                 System.out.println("Erro: Variável " + tokens[posicao] + " já foi declarada.");
                 return false;
