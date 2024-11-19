@@ -39,8 +39,7 @@ public class AnalisadorSintatico {
             System.out.println("\nEntrada válida!\n");
             posicao = 0;
         } else {
-            System.out.println("\nError Sintatico!\n");
-            System.exit(-1);
+            Main.exit("\nError Sintatico!\n");
         }
     }
 
@@ -65,6 +64,21 @@ public class AnalisadorSintatico {
     private boolean CMD() {
         System.out.println("Executando regra CMD na posição: " + posicao+ " (" + tokens.get(posicao) + ")");
         int savePos = posicao;
+
+        //if id existe, ja foi declarada
+        if (Main.ids.IDexists(tokens.get(posicao))) {
+            System.out.println("Consumindo token: id na posição " + posicao + " (" + tokens.get(posicao) + ")");
+            String id = tokens.get(posicao);
+            posicao++;
+            if (match("->")) { // Verifica se é uma atribuição
+                if (match("num") || match("\"Texto\"")) { // Valor válido (num ou string)
+                    Main.ids.addInicializaded(id, tokens.get(posicao - 1));
+                    return true;
+                }
+            }
+            posicao = savePos; // Retorna à posição original se não for atribuição válida
+        }
+
 
         if (match("Int")) {
             savePos = posicao;
@@ -192,7 +206,7 @@ public class AnalisadorSintatico {
                     posicao++;
                     return true;
                 }
-                System.out.println("Error de ID nao encontrado");
+                //System.out.println("Error de ID nao encontrado");
                 return false;
             }
 

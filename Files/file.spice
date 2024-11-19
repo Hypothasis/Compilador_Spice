@@ -1,13 +1,19 @@
-#Comentario
+#Declarando Inteiro, Inicializando e Atribuindo
 Int idade ;
-Int altura -> 23 ;
+Int altura -> 1 ;
+idade -> 21 ;
+
+#Declarando String, Inicializando e Atribuindo
 String nome ;
-String rg -> "CNH" ;
+String RG -> "CNH" ;
+nome -> "Gabriel" ;
 
- If 12 == 12
+#If
+If 12 == 12
      Read idade ;
- end 
+end 
 
+#Repeat
 Repeat 5
     Write "oi" ;
 end 

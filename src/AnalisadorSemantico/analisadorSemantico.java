@@ -22,8 +22,7 @@ public class analisadorSemantico {
         if (S()) {
             System.out.println("\nEntrada semântica válida!\n");
         } else {
-            System.out.println("\nErro Semântico!\n");
-            System.exit(-1);
+            Main.exit("\nErro Semântico!\n");
         }
     }
 
@@ -49,13 +48,46 @@ public class analisadorSemantico {
         System.out.println("Executando regra CMD na posição: " + posicao + " (" + tokens[posicao] + ")");
         int savePos = posicao;
 
+        //Atribuindo valor a um id
+        // Atribuição a variáveis já declaradas
+        if (Main.ids.IDexists(tokens[posicao])) {
+            System.out.println("Consumindo token: id na posição " + posicao + " (" + tokens[posicao] + ")");
+            String id = tokens[posicao];
+            posicao++;
+            if (match("->")) { // Verifica se é uma atribuição
+                if (match("num") || match("\"Texto\"")) { // Valor válido
+                    String tipoEsperado = Main.ids.getTipoID(id);
+                    String valor = tokens[posicao - 1];
+
+                    // Verifica se o tipo do valor é compatível com o tipo da variável
+                    if ((tipoEsperado.equals("Int") && isInteger(valor)) ||
+                            (tipoEsperado.equals("String") && valor.startsWith("\""))) {
+                        Main.ids.setValorID(id, valor); // Atualiza o valor da variável
+                        System.out.println("Atribuição bem-sucedida: " + id + " = " + valor);
+                        return true;
+                    } else {
+                        System.out.println("Erro: Tipo incompatível para a variável " + id);
+                        return false;
+                    }
+                } else {
+                    System.out.println("Erro: Valor inválido para atribuição na posição " + posicao);
+                    return false;
+                }
+            } else {
+                System.out.println("Erro: Operador de atribuição ('->') esperado após id " + id);
+                return false;
+            }
+        }
+
+
         // Verificação para tipo Int
         if (match("Int")) {
             if (Main.ids.IDexists(tokens[posicao])) { // Sse existe
                 if(Main.ids.inicializaded(tokens[posicao])){ //se foi inicializada
+                    posicao++;
                     if (match("->") && match("num")) return true; // Variável inicializada
                 } else { // Se nao foi inicializada
-                    Main.ids.addID(tokens[posicao], "Int", "null"); // Declarada, mas não inicializada
+                    Main.ids.setValorID(tokens[posicao], "null"); // Declarada, mas não inicializada
                     posicao++;
                     if (match(";")) return true; // Variável não inicializada
                 }
@@ -66,6 +98,21 @@ public class analisadorSemantico {
         }
 
         // Verificação para tipo String
+        if (match("String")) {
+            if (Main.ids.IDexists(tokens[posicao])) { // Sse existe
+                if(Main.ids.inicializaded(tokens[posicao])){ //se foi inicializada
+                    posicao++;
+                    if (match("->") && match("\"Texto\"")) return true; // Variável inicializada
+                } else { // Se nao foi inicializada
+                    Main.ids.setValorID(tokens[posicao], "null"); // Declarada, mas não inicializada
+                    posicao++;
+                    if (match(";")) return true; // Variável não inicializada
+                }
+            } else {
+                System.out.println("Erro: Variável " + tokens[posicao] + " já foi declarada.");
+                return false;
+            }
+        }
         if (match("String")) {
             if (!Main.ids.IDexists(tokens[posicao])) { // Se não existe, declaramos
                 Main.ids.addID(tokens[posicao], "String", "null"); // Declarada, mas não inicializada
@@ -80,7 +127,7 @@ public class analisadorSemantico {
 
         // Verificação para If
         if (match("If")) {
-            if (EXP() && COND() && CMDS() && match("end")) return true;
+            if (COND() && CMDS() && match("end")) return true;
         }
 
         // Verificação para Read
@@ -164,7 +211,7 @@ public class analisadorSemantico {
             return true;
         }
 
-        if (match("num")) return true;
+        if (match("num") || match("\"")) return true;
 
         return false;
     }
@@ -174,6 +221,7 @@ public class analisadorSemantico {
             // Verificar se é um número
             if (esperado.equals("num")) {
                 if (isInteger(tokens[posicao])) {
+                    System.out.println("Consumindo token: " + esperado + " na posição " + posicao + " (" + tokens[posicao] + ")");
                     posicao++;
                     return true;
                 }
@@ -186,7 +234,7 @@ public class analisadorSemantico {
                     posicao++;
                     return true;
                 }
-                System.out.println("Erro: ID não encontrado para " + tokens[posicao]);
+                //System.out.println("Erro: ID não encontrado para " + tokens[posicao]);
                 return false;
             }
 
@@ -198,6 +246,10 @@ public class analisadorSemantico {
 
             // Verificar se o token corresponde ao esperado
             if (esperado.equals(tokens[posicao])) {
+                System.out.println("Consumindo token: " + esperado + " na posição " + posicao + " (" + tokens[posicao] + ")");
+                if("end".equals(tokens[posicao])){
+                    return true;
+                }
                 posicao++;
                 return true;
             }

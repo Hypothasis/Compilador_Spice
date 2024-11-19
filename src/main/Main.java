@@ -29,7 +29,7 @@ public class Main {
         while((i = br.read()) != -1){
             analisadorLexico(i);
             analisadorSintatico();
-            //analisadorSemantico();
+            analisadorSemantico();
             countLetters++;
         }
         statistics();
@@ -50,8 +50,8 @@ public class Main {
             Main.tokenStore.getCMD(); // Mostra os valores docomando a ser analisado
             analisadorSintatico.init(tokenStore.cmd);
             analisadorSintatico.analisar();
-            Main.tokenStore.clearCMD(); // Limpa o buffer de comando para o proximo
-            TokenStore.flag = false;
+            //Main.tokenStore.clearCMD(); // Limpa o buffer de comando para o proximo
+            ///TokenStore.flag = false;
             System.out.println("______________________________________");
         }
     }
@@ -73,6 +73,11 @@ public class Main {
         System.out.printf("\nNúmero de comandos executados: %s", TokenStore.cmdCount-1);
         System.out.printf("\nNúmero de caracteres encontrados: %s\n",countLetters);
         IDsReservados.getAllTokensId();
+    }
+
+    public static void exit(String msg) {
+        System.out.println(msg+"linha: "+Estado.linha+" e coluna: "+Estado.coluna);
+        System.exit(-1);
     }
 
 }

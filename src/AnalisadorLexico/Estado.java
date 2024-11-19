@@ -7,7 +7,7 @@ import java.io.IOException;
 
 public class Estado {
     public static TabelaTrans tabela;
-    public static int linha = 1;
+    public static int linha = 2;
     public static int coluna = 1;
     public static String buffer = "";
     public static Integer estadoAtual = 0;

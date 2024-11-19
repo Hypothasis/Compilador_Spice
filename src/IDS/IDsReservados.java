@@ -19,8 +19,8 @@ public class IDsReservados {
 
     public static boolean inicializaded(String id){
         for(int i = 0; i < 5; i++){
-            if(ids[i][0]==id){
-                if(ids[i][2] != null){
+            if(id.equals(ids[i][0])){
+                if(ids[i][2] != "null"){
                     return true;
                 }
             }
@@ -32,13 +32,41 @@ public class IDsReservados {
         for(int i = 0; i < 5; i++){
             if(ids[i][0]==id){
                 if(ids[i][2] == null || ids[i][2] == ""){
-                    ids[i][2] = valor;
                     ids[i][1] = tipo;
+                    ids[i][2] = valor;
                     return true;
                 }
             }
         }
         return false;
+    }
+
+    public static boolean addInicializaded(String id,String valor){
+        for(int i = 0; i < 5; i++){
+            if(id.equals(ids[i][0])){
+                if(ids[i][2] == null || ids[i][2] == ""){
+                    ids[i][2] = valor;
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    public void setValorID(String id, String valor) {
+        for(int i = 0; i < 5; i++){
+            if(id.equals(ids[i][0])){
+                ids[i][2] = valor;
+            }
+        }
+    }
+
+    public String getTipoID(String id) {
+        for(int i = 0; i < 5; i++){
+            if(id.equals(ids[i][0])){
+                return ids[i][1];
+            }
+        }
+        return null;
     }
 
     public static void addID(String id, String tipo, String valor){
@@ -63,4 +91,7 @@ public class IDsReservados {
         }
         System.out.println("______________________________________\n");
     }
+
+
+
 }
