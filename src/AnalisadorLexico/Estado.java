@@ -499,7 +499,7 @@ public class Estado {
                     case -1:
                         //Id
                         System.out.println("Token id \'"+buffer+"\' encontrado");
-                        Main.ids.addID(buffer, "", "");
+                        if(!Main.ids.IDexists(buffer)) Main.ids.addID(buffer, "", "");
                         Main.tokenStore.addCMD(buffer);
                         buffer = "";
                         proximoEstado = 0;

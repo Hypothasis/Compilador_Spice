@@ -9,6 +9,7 @@ import java.util.List;
 public class AnalisadorSintatico {
 
     private List<String> tokens;
+
     private int posicao;
 
     public void teste(String[] cmd){
@@ -36,6 +37,7 @@ public class AnalisadorSintatico {
         System.out.println("__________Analise Sintatica__________");
         if (S()) {
             System.out.println("\nEntrada válida!\n");
+            posicao = 0;
         } else {
             System.out.println("\nError Sintatico!\n");
             System.exit(-1);
@@ -65,24 +67,38 @@ public class AnalisadorSintatico {
         int savePos = posicao;
 
         if (match("Int")) {
+            savePos = posicao;
             if (Main.ids.IDexists(tokens.get(posicao))) {
                 System.out.println("Consumindo token: id na posição " + posicao + " (" + tokens.get(posicao) + ")");
                 posicao++;
-                if (match(";")) return true; // variavel nao inicializada
-                if (match("->") && match("num")) return true; // variavel inicializada
+                if (match(";")) {
+                    Main.ids.addValorID(tokens.get(savePos), "Int" ,"null");
+                    return true; // variavel nao inicializada
+                }
+                if (match("->") && match("num")) {
+                    Main.ids.addValorID(tokens.get(savePos),"Int",tokens.get(posicao-1));
+                    return true; // variavel inicializada
+                }
 
             }
             //posicao = savePos;
         }
 
         if (match("String")) {
+            savePos = posicao;
             if (Main.ids.IDexists(tokens.get(posicao))) {
                 System.out.println("Consumindo token: id na posição " + posicao + " (" + tokens.get(posicao) + ")");
                 posicao++;
-                if (match(";")) return true; // variavel nao inicializada
-                if (match("->") && match("\"Texto\"")) return true; // Inicializada
+                if (match(";")) {
+                    Main.ids.addValorID(tokens.get(savePos), "String" ,"null");
+                    return true; // variavel nao inicializada
+                }
+                if (match("->") && match("\"Texto\"")) {
+                    Main.ids.addValorID(tokens.get(savePos),"String",tokens.get(posicao-1));
+                    return true; // Inicializada
+                }
             }
-            posicao = savePos;
+            //posicao = savePos;
         }
 
 
